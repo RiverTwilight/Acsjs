@@ -11,13 +11,14 @@ function ajaxLoadJs(files, funBefore, funOk, funPercent) {
 	//加载文件
 	function loadfile(file,i) {
 		$.ajax({
-			url: file,
+			url: file['src'],
 			dataType: "text",
 			success: function(data) {
 				oknum++;
 				//console.log(data)
-				fileData[file] = data; //加载成功写入数组
+				fileData[file['src']] = data; //加载成功写入数组
 				loadok(file,i); //调用成功后的处理
+				//console.log(file)
 			},
 			error: function(XMLHttpRequest, textStatus, errorThrown) {
 				console.log("加载失败：" + file)
@@ -41,14 +42,17 @@ function ajaxLoadJs(files, funBefore, funOk, funPercent) {
 
 		//加载完成后，按传的顺序输出js&css到页面
 		if (oknum == files.length) {
-			for (var i = 0; i < files.length; i++) {
-				if (patt_js.test(files[i])) {
+			for (var i = 0; i < files.length; i++) {				
+			    let src = files[i]['src']
+			      , type = files[i]['type'] || 'text/javascript';
+				if (patt_js.test(src)) {
 					var script = document.createElement('script');
-					script.innerHTML = fileData[files[i]];
+					script.innerHTML = fileData[src];
 					document.getElementsByTagName('HEAD').item(0).appendChild(script);
-				} else if (patt_css.test(files[i])) {
+					script.setAttribute("type",type)//设置text属性
+				} else if (patt_css.test(src)) {
 					var css = document.createElement('style');
-					css.innerHTML = fileData[files[i]];
+					css.innerHTML = fileData[src];
 					document.getElementsByTagName('HEAD').item(0).appendChild(css);
 				} else {
 					console.error('Only CSS and JS format files are supported');
