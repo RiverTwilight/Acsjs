@@ -2,12 +2,16 @@
 Use ajax to load JS and CSS, display the loading progress, and load them into HTML in the order of loading.
 
 ## Usage
-Pass in four parameters to use, which are file list (array), event before loading, event after loading, event during loading.Please go to the console to check the **data** parameters
+Pass in four parameters to use, which are file list (array), event before loading, event after loading, event during loading.
+You can also add a 'type' attribute to the script tag (for example, 'text / Babel')
+Please go to the console to check the **data** parameters
 ```javascript
-var files = [
-	'//cdn.bootcss.com/highcharts/7.2.0/highcharts.js?cs=ss',
-	'test.css'
-];
+var files = [{
+	src: 'usereact.js',
+	type: 'text/babel'
+}, {
+	src: 'test.css'
+}];
 ajaxLoadJs(files, () => {
 	loading.open();
 }, () => {
